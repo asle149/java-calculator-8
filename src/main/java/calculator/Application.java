@@ -1,7 +1,6 @@
 package calculator;
 
 import camp.nextstep.edu.missionutils.Console;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -21,13 +20,22 @@ public class Application {
         String delimiterRegex = ",|:";
         String payload = input;
         if(input.startsWith("//")) {
-            int idx = input.indexOf("\n");
-            if(idx == -1 || idx == 2) {
+            if (input.length() <= 2) {
                 throw new IllegalArgumentException("잘못된 커스텀 구분자 형식입니다.");
             }
-            String delimiter = input.substring(2, idx);
+
+            String delimiter = input.substring(2);
+            if (delimiter.isEmpty()) {
+                throw new IllegalArgumentException("잘못된 커스텀 구분자 형식입니다.");
+            }
+
             delimiterRegex += "|" + Pattern.quote(delimiter);
-            payload = input.substring(idx + 1);
+
+            // 다음 줄 읽기
+            payload = Console.readLine();
+            if (payload == null || payload.isEmpty()) {
+                throw new IllegalArgumentException("본문이 비어 있습니다.");
+            }
         }
 
         // 숫자 분리
