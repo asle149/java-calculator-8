@@ -13,7 +13,7 @@ public class Application {
 
         // 빈 문자열 처리
         if(input.equals("")){
-            System.out.println("결과 : 0");
+            System.out.println("결과 : 0\n");
             return;
         }
 
@@ -38,8 +38,13 @@ public class Application {
             nums.add(Integer.parseInt(token));
         }
 
-        /// todo: 계산 구현
+        // 계산 구현
+        int sum = 0;
+        for(int num : nums){
+            sum += num;
+        }
 
+        System.out.printf("결과 : %d\n", sum);
     }
 
     private static void validateToken(String token) {
