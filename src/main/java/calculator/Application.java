@@ -1,8 +1,10 @@
 package calculator;
 
 import camp.nextstep.edu.missionutils.Console;
-import java.util.*;
-import java.io.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Pattern;
 
 public class Application {
     public static void main(String[] args) {
@@ -18,12 +20,17 @@ public class Application {
         int ans;
 
         //커스텀 구분자 확인
+        String delimiterRegex = ",|:";
         if(input.startsWith("//")) {
-            /// todo: 커스텀 구분자 지정
+            int idx = input.indexOf("\n");
+            ///예외처리  if(idx == -1) {}
+            String delimiter = input.substring(2, idx);
+            delimiterRegex += "|" + Pattern.quote(delimiter);
         }
 
         List<Integer> nums = new ArrayList<>();
-        String[] tokens = input.split(",|:");
+        String[] tokens = input.split(delimiterRegex);
+        /// 예외처리
         for(String token : tokens){nums.add(Integer.parseInt(token));}
 
     }
