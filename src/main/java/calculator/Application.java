@@ -20,8 +20,9 @@ public class Application {
         String delimiterRegex = ",|:";
         String payload = input;
         if (payload.startsWith("//")) {
-            int nl = payload.indexOf('\n');
+            payload = payload.replace("\\n", "\n");
 
+            int nl = payload.indexOf('\n');
             String customDelimiter;
             if (nl >= 0) {
                 customDelimiter = payload.substring(2, nl);
