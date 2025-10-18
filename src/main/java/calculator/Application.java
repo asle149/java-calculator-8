@@ -11,31 +11,34 @@ public class Application {
         String input = Console.readLine();
 
         // 빈 문자열 처리
-        if(input.equals("")){
-            System.out.println("결과 : 0\n");
+        if (input == null || input.isEmpty()) {
+            System.out.println("결과 : 0");
             return;
         }
 
         // 커스텀 구분자 확인
         String delimiterRegex = ",|:";
         String payload = input;
-        if(input.startsWith("//")) {
-            if (input.length() <= 2) {
+        if (payload.startsWith("//")) {
+            int nl = payload.indexOf('\n');
+
+            String customDelimiter;
+            if (nl >= 0) {
+                customDelimiter = payload.substring(2, nl);
+                payload = payload.substring(nl + 1);
+            } else {
+                customDelimiter = payload.substring(2);
+                String next = Console.readLine();
+                if (next == null || next.isEmpty()) {
+                    throw new IllegalArgumentException("본문이 비어 있습니다.");
+                }
+                payload = next;
+            }
+
+            if (customDelimiter.isEmpty()) {
                 throw new IllegalArgumentException("잘못된 커스텀 구분자 형식입니다.");
             }
-
-            String delimiter = input.substring(2);
-            if (delimiter.isEmpty()) {
-                throw new IllegalArgumentException("잘못된 커스텀 구분자 형식입니다.");
-            }
-
-            delimiterRegex += "|" + Pattern.quote(delimiter);
-
-            // 다음 줄 읽기
-            payload = Console.readLine();
-            if (payload == null || payload.isEmpty()) {
-                throw new IllegalArgumentException("본문이 비어 있습니다.");
-            }
+            delimiterRegex += "|" + Pattern.quote(customDelimiter);
         }
 
         // 숫자 분리
@@ -52,7 +55,7 @@ public class Application {
             sum += num;
         }
 
-        System.out.printf("결과 : %d\n", sum);
+        System.out.printf("결과 : %d", sum);
     }
 
     private static void validateToken(String token) {
